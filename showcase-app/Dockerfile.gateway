@@ -1,0 +1,32 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy csproj files and restore
+COPY src/backend/Shared/App.Bps.Enum/App.Bps.Enum.csproj Shared/App.Bps.Enum/
+COPY src/backend/Shared/Common.Toolkit/Common.Toolkit.csproj Shared/Common.Toolkit/
+COPY src/backend/Shared/App.Shared.Web/App.Shared.Web.csproj Shared/App.Shared.Web/
+COPY src/backend/Services/Gateway/Gateway.Api/Gateway.Api.csproj Services/Gateway/Gateway.Api/
+
+RUN dotnet restore Services/Gateway/Gateway.Api/Gateway.Api.csproj
+
+# Copy source and build
+COPY src/backend/Shared/App.Bps.Enum/ Shared/App.Bps.Enum/
+COPY src/backend/Shared/Common.Toolkit/ Shared/Common.Toolkit/
+COPY src/backend/Shared/App.Shared.Web/ Shared/App.Shared.Web/
+COPY src/backend/Services/Gateway/Gateway.Api/ Services/Gateway/Gateway.Api/
+
+WORKDIR /src/Services/Gateway/Gateway.Api
+RUN dotnet build -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "Gateway.Api.dll"]

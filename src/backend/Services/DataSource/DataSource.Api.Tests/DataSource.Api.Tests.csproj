@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Testcontainers.MySql" Version="4.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- DataSource projects -->
+    <ProjectReference Include="..\DataSource.Api\DataSource.Api.csproj" />
+    <ProjectReference Include="..\DataSource.Data\DataSource.Data.csproj" />
+
+    <!-- All Data projects for migrations -->
+    <ProjectReference Include="..\..\Identity\Identity.Data\Identity.Data.csproj" />
+    <ProjectReference Include="..\..\JdJobs\JdJobs.Data\JdJobs.Data.csproj" />
+    <ProjectReference Include="..\..\JdSales\JdSales.Data\JdSales.Data.csproj" />
+    <ProjectReference Include="..\..\Rcp\Rcp.Data\Rcp.Data.csproj" />
+
+    <!-- Seed services -->
+    <ProjectReference Include="..\..\Identity\Identity.Api\Identity.Api.csproj" />
+    <ProjectReference Include="..\..\JdJobs\JdJobs.Api\JdJobs.Api.csproj" />
+    <ProjectReference Include="..\..\JdSales\JdSales.Api\JdSales.Api.csproj" />
+
+    <!-- Shared test infrastructure -->
+    <ProjectReference Include="..\..\..\Shared\App.Shared.Tests\App.Shared.Tests.csproj" />
+  </ItemGroup>
+
+</Project>

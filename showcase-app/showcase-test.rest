@@ -1,0 +1,255 @@
+### Variables
+@baseUrl = http://localhost:5000
+@identityUrl = {{baseUrl}}/api/identity
+@jobsUrl = {{baseUrl}}/api/jobs
+@salesUrl = {{baseUrl}}/api/sales
+@rcpUrl = {{baseUrl}}/api/rcp
+
+### ===========================
+### AUTH - Identity Service
+### ===========================
+
+### Login as Admin
+# @name loginAdmin
+POST {{identityUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@jdapp.local",
+    "password": "Test123!"
+}
+
+### Save admin token
+@adminToken = {{loginAdmin.response.body.token}}
+
+### Login as Sales
+# @name loginSales
+POST {{identityUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "sales@jdapp.local",
+    "password": "Test123!"
+}
+
+### Save sales token
+@salesToken = {{loginSales.response.body.token}}
+
+### Login as Recruiter
+# @name loginRecruiter
+POST {{identityUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "recruiter@jdapp.local",
+    "password": "Test123!"
+}
+
+### Save recruiter token
+@recruiterToken = {{loginRecruiter.response.body.token}}
+
+### Get current user (Admin)
+GET {{identityUrl}}/auth/me
+Authorization: Bearer {{adminToken}}
+
+### Get current user (Sales)
+GET {{identityUrl}}/auth/me
+Authorization: Bearer {{salesToken}}
+
+### ===========================
+### SBU - Identity Service
+### ===========================
+
+### Get all SBUs
+GET {{identityUrl}}/sbu
+Authorization: Bearer {{adminToken}}
+
+### Get SBU by ID
+GET {{identityUrl}}/sbu/1
+Authorization: Bearer {{adminToken}}
+
+### ===========================
+### TEAMS - Identity Service
+### ===========================
+
+### Get all Teams
+GET {{identityUrl}}/teams
+Authorization: Bearer {{adminToken}}
+
+### Get Team by ID
+GET {{identityUrl}}/teams/1
+Authorization: Bearer {{adminToken}}
+
+### ===========================
+### APP USERS - Identity Service
+### ===========================
+
+### Get all Users
+GET {{identityUrl}}/app-users
+Authorization: Bearer {{adminToken}}
+
+### Get User by GID
+GET {{identityUrl}}/app-users/usr-admin-001
+Authorization: Bearer {{adminToken}}
+
+### ===========================
+### JOBS - JdJobs Service
+### ===========================
+
+### Get all Jobs
+GET {{jobsUrl}}/jobs
+Authorization: Bearer {{adminToken}}
+
+### Create Job (as Admin)
+POST {{jobsUrl}}/jobs
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "title": "Senior .NET Developer",
+    "description": "Looking for experienced .NET developer",
+    "requirements": "5+ years experience, C#, ASP.NET Core",
+    "sbuId": 1,
+    "teamId": 1
+}
+
+### Get Job Categories
+GET {{jobsUrl}}/job-categories
+Authorization: Bearer {{adminToken}}
+
+### Get Candidates
+GET {{jobsUrl}}/candidates
+Authorization: Bearer {{adminToken}}
+
+### ===========================
+### SALES - JdSales Service
+### ===========================
+
+### Get all Clients
+GET {{salesUrl}}/clients
+Authorization: Bearer {{salesToken}}
+
+### Create Client (as Sales)
+POST {{salesUrl}}/clients
+Content-Type: application/json
+Authorization: Bearer {{salesToken}}
+
+{
+    "name": "Acme Corporation",
+    "industry": "Technology",
+    "website": "https://acme.example.com",
+    "sbuId": 1
+}
+
+### Get Client Contacts
+GET {{salesUrl}}/client-contacts
+Authorization: Bearer {{salesToken}}
+
+### ===========================
+### GATEWAY HEALTH & SWAGGER
+### ===========================
+
+### Gateway Health Check
+GET {{baseUrl}}/health
+
+### Identity Swagger
+GET {{baseUrl}}/api-docs/identity/swagger.json
+
+### Jobs Swagger
+GET {{baseUrl}}/api-docs/jobs/swagger.json
+
+### Sales Swagger
+GET {{baseUrl}}/api-docs/sales/swagger.json
+
+### ===========================
+### RCP - Time Entry Service
+### ===========================
+
+### Get my monthly entry (current user)
+POST {{rcpUrl}}/my
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "year": 2025,
+    "month": 1
+}
+
+### Save day entry
+POST {{rcpUrl}}/entry
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "year": 2025,
+    "month": 1,
+    "workDate": "2025-01-02",
+    "startTime": "08:00",
+    "endTime": "16:30",
+    "breakMinutes": 30,
+    "workType": "Office",
+    "description": "Regular work day"
+}
+
+### Submit entry for approval
+POST {{rcpUrl}}/my/submit
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "year": 2025,
+    "month": 1
+}
+
+### Get supervisor period entries (Submitted only)
+POST {{rcpUrl}}/supervisor/period
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "year": 2025,
+    "month": 1
+}
+
+### Monitor subordinates progress (all statuses)
+POST {{rcpUrl}}/supervisor/monitor/period
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "year": 2025,
+    "month": 1
+}
+
+### Get payroll period entries (HR/Admin)
+POST {{rcpUrl}}/payroll/period
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "year": 2025,
+    "month": 1
+}
+
+### RCP Swagger
+GET {{baseUrl}}/api-docs/rcp/swagger.json
+
+### ===========================
+### ERROR CASES - Testing Auth
+### ===========================
+
+### Login with wrong password
+POST {{identityUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@jdapp.local",
+    "password": "WrongPassword"
+}
+
+### Access protected endpoint without token
+GET {{identityUrl}}/auth/me
+
+### Access protected endpoint with invalid token
+GET {{identityUrl}}/auth/me
+Authorization: Bearer invalid-token-here
