@@ -1,0 +1,242 @@
+services:
+  # ===================
+  # Infrastructure
+  # ===================
+  mysql:
+    image: mysql:8.0
+    container_name: showcase-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: pbx
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - showcase-network
+  webadmin:
+    image: adminer
+    container_name: showcase-adminer
+    restart: always
+    ports:
+      - "9999:8080"
+    networks:
+      - showcase-network
+
+  # ===================
+  # Gateway (Public Entry Point)
+  # ===================
+  gateway:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.gateway
+    container_name: showcase-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - CORS_ORIGINS=http://localhost:4300,http://localhost:5173,http://127.0.0.1:4300,http://localhost:9090
+      - Jwt__Secret=YourSuperSecretKeyThatIsAtLeast32CharactersLong!
+      - Jwt__Issuer=PbxApp
+      - Jwt__Audience=PbxApp
+      - ReverseProxy__Clusters__identity-cluster__Destinations__identity-destination__Address=http://identity:8080
+      - ReverseProxy__Clusters__rate-cluster__Destinations__rate-destination__Address=http://rate:8080
+      - ReverseProxy__Clusters__datasource-cluster__Destinations__datasource-destination__Address=http://datasource:8080
+      - ReverseProxy__Clusters__rcp-cluster__Destinations__rcp-destination__Address=http://rcp:8080
+      - ReverseProxy__Clusters__cdr-cluster__Destinations__cdr-destination__Address=http://cdr:8080
+    depends_on:
+      identity:
+        condition: service_healthy
+      rate:
+        condition: service_healthy
+      datasource:
+        condition: service_healthy
+      rcp:
+        condition: service_healthy
+      cdr:
+        condition: service_healthy
+    networks:
+      - showcase-network
+
+  # ===================
+  # Microservices
+  # ===================
+  identity:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.identity
+    container_name: showcase-identity
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=pbx_identity;User=db_user;Password=db_pass;Charset=utf8mb4;
+      - Seed__RunOnStartup=true
+      - Seed__IncludeShowcaseData=true
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - showcase-network
+
+  rate:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.rates
+    container_name: showcase-rate
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=pbx_rates;User=db_user;Password=db_pass;Charset=utf8mb4;
+      - Seed__RunOnStartup=true
+      - Seed__IncludeShowcaseData=true
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - showcase-network
+
+  datasource:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.datasource
+    container_name: showcase-datasource
+    restart: on-failure:5
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=pbx_datasource;User=db_user;Password=db_pass;Charset=utf8mb4;
+    depends_on:
+      mysql:
+        condition: service_healthy      
+      identity:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    networks:
+      - showcase-network
+
+  rcp:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.rcp
+    container_name: showcase-rcp
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=pbx_rcp;User=db_user;Password=db_pass;Charset=utf8mb4;
+      - Services__DataSource=http://datasource:8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+      datasource:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - showcase-network
+
+  cdr:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.cdr
+    container_name: showcase-cdr
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=pbx_cdr;User=db_user;Password=db_pass;Charset=utf8mb4;
+      - Seed__RunOnStartup=true
+      - Seed__IncludeShowcaseData=true
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - showcase-network
+
+  answerrule:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.answerrule
+    container_name: showcase-answerrule
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=pbx_answerrule;User=db_user;Password=db_pass;Charset=utf8mb4;
+      - Seed__RunOnStartup=true
+      - Seed__IncludeShowcaseData=true
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - showcase-network
+
+  # ===================
+  # Frontend
+  # ===================
+  frontend:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.front
+      args:
+        VITE_API_URL: http://localhost:8080
+        VITE_APP_MODE: full
+        VITE_DEFAULT_EMAIL: admin@pbx.local
+        VITE_DEFAULT_PASSWORD: Agent666
+        VITE_APP_NAME: "PBX by Agent - Showcase"
+    container_name: showcase-frontend
+    ports:
+      - "9090:80"
+    depends_on:
+      gateway:
+        condition: service_started
+    networks:
+      - showcase-network
+
+
+volumes:
+  mysql-data:  
+
+networks:
+  showcase-network:
+    driver: bridge
