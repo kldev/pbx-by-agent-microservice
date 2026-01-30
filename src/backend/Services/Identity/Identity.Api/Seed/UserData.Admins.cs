@@ -16,15 +16,15 @@ public static partial class UserData
         // Test admin account - DO NOT REMOVE - used in E2E tests
         CreateTestAdmin(),
 
-        // Development team
-        CreateUser("Jan", "Nowak", Department.Developers, StructureIds.MainSbu, TeamData.TeamIds.Development),
-        CreateUser("Anna", "Kowalska", Department.Developers, StructureIds.MainSbu, TeamData.TeamIds.Development),
+        // Poland - WolfPack team
+        CreateUser("Jan", "Nowak", Department.Sales, StructureData.StructureIds.Poland, TeamData.TeamIds.WolfPack),
+        CreateUser("Anna", "Kowalska", Department.Sales, StructureData.StructureIds.Poland, TeamData.TeamIds.WolfPack),
 
-        // Support team
-        CreateUser("Piotr", "Wiśniewski", Department.Support, StructureIds.MainSbu, TeamData.TeamIds.Support),
+        // Poland - TopGunners team
+        CreateUser("Piotr", "Wiśniewski", Department.Sales, StructureData.StructureIds.Poland, TeamData.TeamIds.TopGunners),
 
-        // Operations team
-        CreateUser("Maria", "Zielińska", Department.Operations, StructureIds.MainSbu, TeamData.TeamIds.Operations)
+        // Foreign - MadMen team
+        CreateUser("Maria", "Zielińska", Department.Sales, StructureData.StructureIds.Foreign, TeamData.TeamIds.MadMen)
     ];
 
     /// <summary>
@@ -39,8 +39,8 @@ public static partial class UserData
         FirstName = "Test",
         LastName = "Admin",
         Department = Department.Developers,
-        StructureId = StructureIds.MainSbu,
-        TeamId = TeamData.TeamIds.Development,
+        StructureId = StructureData.StructureIds.Poland,
+        TeamId = TeamData.TeamIds.WolfPack,
         IsActive = true
     };
 

@@ -17,14 +17,6 @@ public static partial class UserData
     private static readonly HashSet<string> UsedEmails = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
-    /// Structure IDs for convenience
-    /// </summary>
-    public static class StructureIds
-    {
-        public const int MainSbu = 1;
-    }
-
-    /// <summary>
     /// Generates email in format: {first_letter}.{lastname}@pbx.local
     /// Removes Polish diacritics and handles duplicates.
     /// </summary>

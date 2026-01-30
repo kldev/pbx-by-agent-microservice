@@ -18,5 +18,10 @@ public enum TeamType
     /// <summary>
     /// Zespół operacyjny
     /// </summary>
-    Operations
+    Operations,
+
+    /// <summary>
+    /// Zespół sprzedaży
+    /// </summary>
+    Sales
 }

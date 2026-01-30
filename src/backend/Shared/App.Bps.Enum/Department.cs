@@ -23,5 +23,10 @@ public enum Department
     /// <summary>
     /// Finanse
     /// </summary>
-    Finance
+    Finance,
+
+    /// <summary>
+    /// Dział sprzedaży
+    /// </summary>
+    Sales
 }

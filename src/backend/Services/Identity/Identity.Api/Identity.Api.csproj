@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\App.Shared.Web\App.Shared.Web.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Seed.Shared\Seed.Shared.csproj" />
     <ProjectReference Include="..\Identity.Data\Identity.Data.csproj" />
   </ItemGroup>
 

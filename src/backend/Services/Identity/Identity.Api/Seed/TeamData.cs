@@ -1,57 +1,83 @@
 using App.Bps.Enum;
 using Identity.Data.Entities;
+using Seed.Shared;
 
 namespace Identity.Api.Seed;
 
 /// <summary>
 /// Seed data for Teams.
+/// Uses shared GUIDs from Seed.Shared for cross-service consistency.
 /// </summary>
 public static class TeamData
 {
-    public static class FixedGuids
-    {
-        public static readonly string Development = "11111111-0001-0001-0001-000000000001";
-        public static readonly string Support = "11111111-0002-0001-0001-000000000001";
-        public static readonly string Operations = "11111111-0003-0001-0001-000000000001";
-    }
-
     /// <summary>
     /// Team IDs for reference in UserData
     /// </summary>
     public static class TeamIds
     {
-        public const int Development = 1;
-        public const int Support = 2;
-        public const int Operations = 3;
+        // Poland
+        public const int WolfPack = 1;
+        public const int TopGunners = 2;
+
+        // Foreign
+        public const int MadMen = 3;
+        public const int VictorySquad = 4;
+        public const int PitchPerfect = 5;
     }
 
     public static List<Team> GetTeams() =>
     [
+        // Poland teams
         new()
         {
-            Gid = FixedGuids.Development,
-            StructureId = 1,
-            Code = "DEV",
-            Name = "Development",
-            Type = TeamType.IT,
+            Id = TeamIds.WolfPack,
+            Gid = SeedGuids.Teams.WolfPackGid,
+            StructureId = StructureData.StructureIds.Poland,
+            Code = "WOLF",
+            Name = SeedGuids.Teams.WolfPackName,
+            Type = TeamType.Sales,
             IsActive = true
         },
         new()
         {
-            Gid = FixedGuids.Support,
-            StructureId = 1,
-            Code = "SUP",
-            Name = "Support",
-            Type = TeamType.Support,
+            Id = TeamIds.TopGunners,
+            Gid = SeedGuids.Teams.TopGunnersGid,
+            StructureId = StructureData.StructureIds.Poland,
+            Code = "TOPG",
+            Name = SeedGuids.Teams.TopGunnersName,
+            Type = TeamType.Sales,
+            IsActive = true
+        },
+
+        // Foreign teams
+        new()
+        {
+            Id = TeamIds.MadMen,
+            Gid = SeedGuids.Teams.MadMenGid,
+            StructureId = StructureData.StructureIds.Foreign,
+            Code = "MADM",
+            Name = SeedGuids.Teams.MadMenName,
+            Type = TeamType.Sales,
             IsActive = true
         },
         new()
         {
-            Gid = FixedGuids.Operations,
-            StructureId = 1,
-            Code = "OPS",
-            Name = "Operations",
-            Type = TeamType.Operations,
+            Id = TeamIds.VictorySquad,
+            Gid = SeedGuids.Teams.VictorySquadGid,
+            StructureId = StructureData.StructureIds.Foreign,
+            Code = "VICT",
+            Name = SeedGuids.Teams.VictorySquadName,
+            Type = TeamType.Sales,
+            IsActive = true
+        },
+        new()
+        {
+            Id = TeamIds.PitchPerfect,
+            Gid = SeedGuids.Teams.PitchPerfectGid,
+            StructureId = StructureData.StructureIds.Foreign,
+            Code = "PITCH",
+            Name = SeedGuids.Teams.PitchPerfectName,
+            Type = TeamType.Sales,
             IsActive = true
         }
     ];
