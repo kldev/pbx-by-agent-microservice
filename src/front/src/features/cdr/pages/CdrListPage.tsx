@@ -6,10 +6,7 @@ import {
 	Text,
 	tokens,
 } from "@fluentui/react-components";
-import {
-	ChevronLeftRegular,
-	ChevronRightRegular,
-} from "@fluentui/react-icons";
+import { ChevronLeftRegular, ChevronRightRegular } from "@fluentui/react-icons";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -91,10 +88,8 @@ const CdrListPage: React.FC = () => {
 	const result = cdrListMutation.data;
 	const items: CallRecordResponse[] =
 		result?.status === 200 ? (result.data.items ?? []) : [];
-	const totalCount =
-		result?.status === 200 ? (result.data.totalCount ?? 0) : 0;
-	const totalPages =
-		result?.status === 200 ? (result.data.totalPages ?? 1) : 1;
+	const totalCount = result?.status === 200 ? (result.data.totalCount ?? 0) : 0;
+	const totalPages = result?.status === 200 ? (result.data.totalPages ?? 1) : 1;
 	const currentPage = pageNumber;
 	const hasNextPage =
 		result?.status === 200 ? (result.data.hasNextPage ?? false) : false;

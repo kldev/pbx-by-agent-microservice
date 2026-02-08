@@ -382,11 +382,7 @@ const AnsweringRuleForm: React.FC<AnsweringRuleFormProps> = ({
 								},
 							}}
 							render={({ field }) => (
-								<Input
-									{...field}
-									type="email"
-									placeholder="user@example.com"
-								/>
+								<Input {...field} type="email" placeholder="user@example.com" />
 							)}
 						/>
 					</Field>
@@ -422,7 +418,9 @@ const AnsweringRuleForm: React.FC<AnsweringRuleFormProps> = ({
 					render={({ field }) => (
 						<TimeSlotsEditor
 							value={field.value ?? []}
-							onChange={(slots) => setValue("timeSlots", slots, { shouldValidate: true })}
+							onChange={(slots) =>
+								setValue("timeSlots", slots, { shouldValidate: true })
+							}
 							error={errors.timeSlots?.message}
 						/>
 					)}

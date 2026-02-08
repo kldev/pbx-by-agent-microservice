@@ -261,7 +261,8 @@ const CdrTable: React.FC<CdrTableProps> = ({ items, onRowClick }) => {
 					<CardHeader
 						header={
 							<Text weight="semibold">
-								{item.callerId || "Nieznany"} → {item.calledNumber || "Nieznany"}
+								{item.callerId || "Nieznany"} →{" "}
+								{item.calledNumber || "Nieznany"}
 							</Text>
 						}
 						description={
@@ -284,8 +285,8 @@ const CdrTable: React.FC<CdrTableProps> = ({ items, onRowClick }) => {
 						<div className={styles.cardRow}>
 							<ClockRegular className={styles.cardRowIcon} />
 							<span className={styles.cardRowText}>
-								{formatDateTime(item.startTime)} ({formatDuration(item.duration)}
-								)
+								{formatDateTime(item.startTime)} (
+								{formatDuration(item.duration)})
 							</span>
 						</div>
 						{item.totalCost !== undefined && (

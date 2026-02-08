@@ -38,5 +38,5 @@ dist-ssr
 # PnP files (generated locally, contain machine-specific paths)
 .pnp.cjs
 .pnp.loader.mjs
-.env
+
 

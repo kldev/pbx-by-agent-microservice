@@ -253,9 +253,7 @@ const AnsweringRuleDetailPage: React.FC = () => {
 									}}
 								>
 									<StatusBadge isEnabled={rule.isEnabled} />
-									<Badge appearance="outline">
-										Priorytet: {rule.priority}
-									</Badge>
+									<Badge appearance="outline">Priorytet: {rule.priority}</Badge>
 								</div>
 							</div>
 						</div>
@@ -383,7 +381,9 @@ const AnsweringRuleDetailPage: React.FC = () => {
 								</TableHeader>
 								<TableBody>
 									{sortedTimeSlots.map((slot, idx) => (
-										<TableRow key={`${slot.dayOfWeek}-${slot.startTime}-${idx}`}>
+										<TableRow
+											key={`${slot.dayOfWeek}-${slot.startTime}-${idx}`}
+										>
 											<TableCell>
 												{DAY_OF_WEEK_LABELS[slot.dayOfWeek as DayOfWeek] ??
 													slot.dayOfWeek}
@@ -394,9 +394,7 @@ const AnsweringRuleDetailPage: React.FC = () => {
 											<TableCell>
 												{slot.isAllDay ? "-" : slot.endTime}
 											</TableCell>
-											<TableCell>
-												{slot.isAllDay ? "Tak" : "Nie"}
-											</TableCell>
+											<TableCell>{slot.isAllDay ? "Tak" : "Nie"}</TableCell>
 										</TableRow>
 									))}
 								</TableBody>

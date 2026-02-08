@@ -153,10 +153,8 @@ const AnsweringRuleListPage: React.FC = () => {
 	const result = rulesListMutation.data;
 	const items: AnsweringRuleResponse[] =
 		result?.status === 200 ? (result.data.items ?? []) : [];
-	const totalCount =
-		result?.status === 200 ? (result.data.totalCount ?? 0) : 0;
-	const totalPages =
-		result?.status === 200 ? (result.data.totalPages ?? 1) : 1;
+	const totalCount = result?.status === 200 ? (result.data.totalCount ?? 0) : 0;
+	const totalPages = result?.status === 200 ? (result.data.totalPages ?? 1) : 1;
 	const hasNextPage =
 		result?.status === 200 ? (result.data.hasNextPage ?? false) : false;
 	const hasPreviousPage =

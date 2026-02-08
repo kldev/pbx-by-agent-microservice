@@ -235,7 +235,9 @@ const CdrDetailPage: React.FC = () => {
 							<Text className={styles.sectionTitle}>Numery</Text>
 							<div className={styles.detailRow}>
 								<Text className={styles.detailLabel}>Z numeru:</Text>
-								<Text className={styles.detailValue}>{cdr.callerId || "-"}</Text>
+								<Text className={styles.detailValue}>
+									{cdr.callerId || "-"}
+								</Text>
 							</div>
 							<div className={styles.detailRow}>
 								<Text className={styles.detailLabel}>Na numer:</Text>
@@ -252,7 +254,9 @@ const CdrDetailPage: React.FC = () => {
 							{cdr.matchedPrefix && (
 								<div className={styles.detailRow}>
 									<Text className={styles.detailLabel}>Dopasowany prefix:</Text>
-									<Text className={styles.detailValue}>{cdr.matchedPrefix}</Text>
+									<Text className={styles.detailValue}>
+										{cdr.matchedPrefix}
+									</Text>
 								</div>
 							)}
 						</div>
@@ -325,9 +329,7 @@ const CdrDetailPage: React.FC = () => {
 						<Text className={styles.sectionTitle}>Status i routing</Text>
 						<div className={styles.detailRow}>
 							<Text className={styles.detailLabel}>Status:</Text>
-							<Text>
-								{cdr.callStatusName || cdr.callStatusCode || "-"}
-							</Text>
+							<Text>{cdr.callStatusName || cdr.callStatusCode || "-"}</Text>
 						</div>
 						<div className={styles.detailRow}>
 							<Text className={styles.detailLabel}>Kierunek:</Text>
@@ -335,7 +337,9 @@ const CdrDetailPage: React.FC = () => {
 						</div>
 						{(cdr.terminationCauseCode || cdr.terminationCauseName) && (
 							<div className={styles.detailRow}>
-								<Text className={styles.detailLabel}>Przyczyna zakończenia:</Text>
+								<Text className={styles.detailLabel}>
+									Przyczyna zakończenia:
+								</Text>
 								<Text>
 									{cdr.terminationCauseName || cdr.terminationCauseCode}
 								</Text>

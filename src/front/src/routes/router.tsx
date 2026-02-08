@@ -71,6 +71,13 @@ const CdrDetailPage = lazy(() =>
 // RCP
 const RcpPage = lazy(() => import("../features/rcp/pages/RcpPage"));
 
+// Costs
+const CostsListPage = lazy(() =>
+	import("../features/costs/pages").then((m) => ({
+		default: m.CostsListPage,
+	})),
+);
+
 // Answering Rules
 const AnsweringRuleListPage = lazy(() =>
 	import("../features/answering-rules/pages").then((m) => ({
@@ -151,6 +158,11 @@ export const router = createBrowserRouter([
 					{
 						path: ROUTES.CDR_DETAIL,
 						element: <CdrDetailPage />,
+					},
+					// Costs
+					{
+						path: ROUTES.COSTS_LIST,
+						element: <CostsListPage />,
 					},
 				],
 			},

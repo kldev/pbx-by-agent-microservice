@@ -10,7 +10,11 @@ import { AnsweringRuleAction } from "../../../api/answerrule/models";
 
 const ACTION_TYPE_CONFIG: Record<
 	AnsweringRuleAction,
-	{ label: string; color: "brand" | "success" | "warning" | "informative"; icon: React.ReactNode }
+	{
+		label: string;
+		color: "brand" | "success" | "warning" | "informative";
+		icon: React.ReactNode;
+	}
 > = {
 	Voicemail: {
 		label: "Poczta głosowa",

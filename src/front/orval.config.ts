@@ -91,4 +91,14 @@ export default defineConfig({
 			schemas: "./src/api/answerrule/models",
 		},
 	},
+	fincosts: {
+		input: {
+			target: `${GATEWAY_URL}/api-docs/fincosts/swagger.json`,
+		},
+		output: {
+			...commonOutput,
+			target: "./src/api/fincosts/endpoints",
+			schemas: "./src/api/fincosts/models",
+		},
+	},
 });

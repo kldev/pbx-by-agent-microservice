@@ -21,6 +21,8 @@ export const ROUTES = {
 	ANSWERING_RULES_EDIT: "/answering-rules/:gid/edit",
 	// RCP
 	RCP: "/rcp",
+	// Costs
+	COSTS_LIST: "/costs",
 	// Dictionary Config
 	DICTIONARY_CONFIG: "/settings/dictionaries",
 } as const;

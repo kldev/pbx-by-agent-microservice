@@ -279,9 +279,7 @@ const AnsweringRuleTable: React.FC<AnsweringRuleTableProps> = ({
 					onClick={() => onRowClick?.(item)}
 				>
 					<CardHeader
-						header={
-							<Text weight="semibold">{item.name || "Brak nazwy"}</Text>
-						}
+						header={<Text weight="semibold">{item.name || "Brak nazwy"}</Text>}
 						description={
 							<div
 								style={{

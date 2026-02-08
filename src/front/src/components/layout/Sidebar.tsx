@@ -8,6 +8,8 @@ import {
 	ChevronRightRegular,
 	ClockFilled,
 	ClockRegular,
+	MoneyFilled,
+	MoneyRegular,
 	PeopleFilled,
 	PeopleRegular,
 	PersonAccountsFilled,
@@ -218,7 +220,28 @@ const Sidebar: React.FC = () => {
 					/>
 				</div>
 
-				{/* Grupa: Systemowe - tylko dla adminów */}
+				{/* Grupa: Finanse - tylko dla adminów */}
+			{isAdmin && (
+				<>
+					<div className={styles.navDivider} />
+					<NavGroupLabel
+						label="Finanse"
+						shortLabel="F"
+						collapsed={isSidebarCollapsed}
+					/>
+					<div className={styles.navGroup}>
+						<NavItem
+							to={ROUTES.COSTS_LIST}
+							icon={<MoneyRegular />}
+							activeIcon={<MoneyFilled />}
+							label="Koszty"
+							collapsed={isSidebarCollapsed}
+						/>
+					</div>
+				</>
+			)}
+
+			{/* Grupa: Systemowe - tylko dla adminów */}
 				{isAdmin && (
 					<>
 						<div className={styles.navDivider} />

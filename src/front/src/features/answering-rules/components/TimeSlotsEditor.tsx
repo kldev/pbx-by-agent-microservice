@@ -192,19 +192,17 @@ const TimeSlotsEditor: React.FC<TimeSlotsEditorProps> = ({
 						{sortedSlots.map((slot, displayIdx) => {
 							const originalIdx = value.indexOf(slot);
 							return (
-								<TableRow key={`${slot.dayOfWeek}-${slot.startTime}-${displayIdx}`}>
+								<TableRow
+									key={`${slot.dayOfWeek}-${slot.startTime}-${displayIdx}`}
+								>
 									<TableCell>
 										<TableCellLayout>
 											{DAY_OF_WEEK_LABELS[slot.dayOfWeek as DayOfWeek] ??
 												slot.dayOfWeek}
 										</TableCellLayout>
 									</TableCell>
-									<TableCell>
-										{slot.isAllDay ? "-" : slot.startTime}
-									</TableCell>
-									<TableCell>
-										{slot.isAllDay ? "-" : slot.endTime}
-									</TableCell>
+									<TableCell>{slot.isAllDay ? "-" : slot.startTime}</TableCell>
+									<TableCell>{slot.isAllDay ? "-" : slot.endTime}</TableCell>
 									<TableCell>{slot.isAllDay ? "Tak" : "Nie"}</TableCell>
 									<TableCell>
 										<Button
