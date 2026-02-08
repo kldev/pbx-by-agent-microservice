@@ -1,0 +1,32 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy csproj files and restore
+COPY src/backend/Shared/App.Bps.Enum/App.Bps.Enum.csproj Shared/App.Bps.Enum/
+COPY src/backend/Shared/Common.Toolkit/Common.Toolkit.csproj Shared/Common.Toolkit/
+COPY src/backend/Shared/App.BaseData/App.BaseData.csproj Shared/App.BaseData/
+COPY src/backend/Shared/App.Shared.Web/App.Shared.Web.csproj Shared/App.Shared.Web/
+COPY src/backend/Services/FinCosts/FinCosts.Data/FinCosts.Data.csproj Services/FinCosts/FinCosts.Data/
+COPY src/backend/Services/FinCosts/FinCosts.Api/FinCosts.Api.csproj Services/FinCosts/FinCosts.Api/
+
+RUN dotnet restore Services/FinCosts/FinCosts.Api/FinCosts.Api.csproj
+
+# Copy source and build
+COPY src/backend/Shared/ Shared/
+COPY src/backend/Services/FinCosts/ Services/FinCosts/
+
+WORKDIR /src/Services/FinCosts/FinCosts.Api
+RUN dotnet build -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "FinCosts.Api.dll"]

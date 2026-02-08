@@ -32,6 +32,7 @@ public class SwaggerAggregator
         new("Projects", "/api/projects", "projects-cluster"),
         new("Cdr", "/api/cdr", "cdr-cluster"),
         new("AnswerRule", "/api/answerrule", "answerrule-cluster"),
+        new("Fincosts", "/api/fincosts", "fincosts-cluster")
     ];
 
     /// <summary>

@@ -211,6 +211,30 @@ services:
     networks:
       - showcase-network
 
+  fincosts:
+    build:
+      context: ..
+      dockerfile: showcase-app/Dockerfile.fincosts
+    container_name: showcase-fincosts
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=fin_costs;User=db_user;Password=db_pass;Charset=utf8mb4;
+      - Seed__RunOnStartup=true
+      - Seed__IncludeShowcaseData=true
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - showcase-network
+
+
   # ===================
   # Frontend
   # ===================

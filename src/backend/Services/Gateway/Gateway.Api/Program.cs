@@ -105,6 +105,7 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/api-docs/rcp/swagger.json", "RCP (Timesheets) API");
     c.SwaggerEndpoint("/api-docs/cdr/swagger.json", "CDR (Call data records) API");
     c.SwaggerEndpoint("/api-docs/answerrule/swagger.json", "Answer Rule API");
+    c.SwaggerEndpoint("/api-docs/fincosts/swagger.json", "Fin Costs API");
 });
 
 // CORS must be before Authentication

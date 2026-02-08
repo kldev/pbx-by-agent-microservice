@@ -70,12 +70,20 @@ var tests = new (string Name, string Method, string Url, object? body)[]
     ("RCP: my monthly entry", "POST", "/api/rcp/my", new { year = DateTime.Now.Year, month = DateTime.Now.Month }),
     ("RCP: supervisor period", "POST", "/api/rcp/supervisor/period", new { year = DateTime.Now.Year, month = DateTime.Now.Month }),
     ("RCP: payroll period", "POST", "/api/rcp/payroll/period", new { year = DateTime.Now.Year, month = DateTime.Now.Month }),
+    
+    // FinCosts
+    ("FinCosts: Document types", "POST", "/api/fincosts/costs/document-types", new {}),
+    ("FinCosts: Currency types", "POST", "/api/fincosts/costs/currency-types", new {}),
+    ("FinCosts: VAT Rate types", "POST", "/api/fincosts/costs/vat-rate-types", new {}),
+    ("FinCosts: Documents (page 1)", "POST", "/api/fincosts/costs/documents/list", new { pageNumber = 1, pageSize = 10 }),
+    ("FinCosts: Documents (page 2)", "POST", "/api/fincosts/costs/documents/list", new { pageNumber = 2, pageSize = 5 }),
+    ("FinCosts: Documents (search)", "POST", "/api/fincosts/costs/documents/list", new { pageNumber = 1, pageSize = 10, search = "TechNova" }),
 };
 
 var table = new Table();
-table.AddColumn("Endpoint");
-table.AddColumn("Status");
-table.AddColumn("Response");
+table.AddColumn("Endpoint", tc => { tc.Width = 40; });
+table.AddColumn("Status", tc => { tc.Width = 20; });
+table.AddColumn("Response", tc => { tc.Width = 120; });
 
 foreach (var (name, method, url, body) in tests)
 {
