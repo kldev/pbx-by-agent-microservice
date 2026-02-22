@@ -84,9 +84,12 @@ const CostsListPage: React.FC = () => {
 
 	const [searchValue, setSearchValue] = useState("");
 	const [pageNumber, setPageNumber] = useState(1);
-	const [selectedDocTypeId, setSelectedDocTypeId] = useState<number | null>(null);
+	const [selectedDocTypeId, setSelectedDocTypeId] = useState<number | null>(
+		null,
+	);
 	const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
-	const [selectedPaymentStatus, setSelectedPaymentStatus] = useState<string>(PAYMENT_STATUS_ALL);
+	const [selectedPaymentStatus, setSelectedPaymentStatus] =
+		useState<string>(PAYMENT_STATUS_ALL);
 	const debouncedSearch = useDebounce(searchValue, SEARCH_DEBOUNCE_MS);
 
 	// Dictionary data
@@ -101,7 +104,9 @@ const CostsListPage: React.FC = () => {
 	const docTypes: DocumentTypeResponse[] =
 		docTypesMutation.data?.status === 200 ? docTypesMutation.data.data : [];
 	const currencyTypes: CurrencyTypeResponse[] =
-		currencyTypesMutation.data?.status === 200 ? currencyTypesMutation.data.data : [];
+		currencyTypesMutation.data?.status === 200
+			? currencyTypesMutation.data.data
+			: [];
 
 	// Build filter
 	const wasPaidFilter =
@@ -124,7 +129,13 @@ const CostsListPage: React.FC = () => {
 
 	useEffect(() => {
 		documentsMutation.mutate({ data: filter });
-	}, [pageNumber, debouncedSearch, selectedDocTypeId, selectedCurrency, selectedPaymentStatus]);
+	}, [
+		pageNumber,
+		debouncedSearch,
+		selectedDocTypeId,
+		selectedCurrency,
+		selectedPaymentStatus,
+	]);
 
 	const result = documentsMutation.data;
 	const items: DocumentEntryResponse[] =
@@ -137,7 +148,10 @@ const CostsListPage: React.FC = () => {
 	const hasPreviousPage =
 		result?.status === 200 ? (result.data.hasPreviousPage ?? false) : false;
 	const hasActiveFilters =
-		!!searchValue || selectedDocTypeId !== null || selectedCurrency !== null || selectedPaymentStatus !== PAYMENT_STATUS_ALL;
+		!!searchValue ||
+		selectedDocTypeId !== null ||
+		selectedCurrency !== null ||
+		selectedPaymentStatus !== PAYMENT_STATUS_ALL;
 
 	const handlePreviousPage = () => {
 		if (hasPreviousPage) setPageNumber((prev) => prev - 1);
@@ -164,10 +178,7 @@ const CostsListPage: React.FC = () => {
 		<div className={styles.container}>
 			<PageHeader
 				title="Koszty"
-				breadcrumbs={[
-					{ label: "Dashboard", href: "/" },
-					{ label: "Koszty" },
-				]}
+				breadcrumbs={[{ label: "Dashboard", href: "/" }, { label: "Koszty" }]}
 			/>
 			<div className={styles.toolbar}>
 				<SearchBox
@@ -185,7 +196,9 @@ const CostsListPage: React.FC = () => {
 							? (docTypes.find((d) => d.id === selectedDocTypeId)?.namePL ?? "")
 							: ""
 					}
-					selectedOptions={selectedDocTypeId !== null ? [String(selectedDocTypeId)] : []}
+					selectedOptions={
+						selectedDocTypeId !== null ? [String(selectedDocTypeId)] : []
+					}
 					onOptionSelect={(_ev, data) => {
 						const val = data.optionValue;
 						setSelectedDocTypeId(val === "__all__" ? null : Number(val));
@@ -227,7 +240,11 @@ const CostsListPage: React.FC = () => {
 								? "Nieopłacone"
 								: ""
 					}
-					selectedOptions={selectedPaymentStatus !== PAYMENT_STATUS_ALL ? [selectedPaymentStatus] : []}
+					selectedOptions={
+						selectedPaymentStatus !== PAYMENT_STATUS_ALL
+							? [selectedPaymentStatus]
+							: []
+					}
 					onOptionSelect={(_ev, data) => {
 						setSelectedPaymentStatus(data.optionValue ?? PAYMENT_STATUS_ALL);
 						setPageNumber(1);

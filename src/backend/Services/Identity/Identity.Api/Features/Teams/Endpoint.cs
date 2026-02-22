@@ -29,7 +29,7 @@ public static class Endpoint
 
         group.MapPost("/", Create)
             .WithName("CreateTeam")
-            .Produces<TeamResponse>(201)
+            .Produces<TeamResponse>()
             .Produces<ApiErrorResponse>(400);
 
         group.MapPut("/{gid}", Update)

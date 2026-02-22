@@ -34,7 +34,7 @@ public static class Endpoint
         // Root only - create user
         group.MapPost("/", Create)
             .WithName("CreateAppUser")
-            .Produces<AppUserResponse>(201)
+            .Produces<AppUserResponse>()
             .Produces<ApiErrorResponse>(400);
 
         // Root only - update user

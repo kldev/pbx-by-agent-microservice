@@ -113,11 +113,12 @@ const SystemUserFormPanel = forwardRef<
 							password: data.password,
 							department: data.department,
 							roles: data.roles,
+							structureId: data.structureId ?? undefined,
 						},
 					},
 					{
 						onSuccess: (response) => {
-							if (response.status === 201) {
+							if (response.status === 200) {
 								handleClose();
 								onSuccess?.();
 							}

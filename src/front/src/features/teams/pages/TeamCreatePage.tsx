@@ -2,11 +2,10 @@ import { makeStyles, tokens } from "@fluentui/react-components";
 import type React from "react";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
-
+import { useCreateTeam } from "../../../api/identity/endpoints/teams/teams";
 import { PageHeader } from "../../../components/common";
 import { ROUTES } from "../../../routes/routes";
 import { TeamForm, type TeamFormData } from "../components";
-import { useCreateTeam } from "../../../api/identity/endpoints/teams/teams";
 
 const useStyles = makeStyles({
 	container: {
@@ -39,7 +38,7 @@ const TeamCreatePage: React.FC = () => {
 				},
 				{
 					onSuccess: (response) => {
-						if (response.status === 201 && response.data.gid) {
+						if (response.status === 200 && response.data.gid) {
 							navigate(`/teams/${response.data.gid}`);
 						} else {
 							navigate(ROUTES.TEAMS_LIST);

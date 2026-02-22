@@ -29,9 +29,8 @@ import {
 	ToggleLeftRegular,
 } from "@fluentui/react-icons";
 import type React from "react";
-
-import TeamStatusBadge from "./TeamStatusBadge";
 import type { TeamResponse } from "../../../api/identity/models";
+import TeamStatusBadge from "./TeamStatusBadge";
 
 const useStyles = makeStyles({
 	tableContainer: {
@@ -191,7 +190,7 @@ const TeamTable: React.FC<TeamTableProps> = ({
 						<TableHeaderCell
 							className={mergeClasses(styles.headerCell, styles.sbuCell)}
 						>
-							SBU
+							Struktura
 						</TableHeaderCell>
 						<TableHeaderCell
 							className={mergeClasses(

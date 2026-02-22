@@ -1,12 +1,12 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router";
+import { AppRole } from "../api/identity/models";
 // Eager load tylko auth pages (pierwsze co user widzi)
 import { LoginPage } from "../features/auth/pages";
+import { DashboardPage } from "../features/dashboard";
 import ProtectedRoute from "./ProtectedRoute";
 import RoleGuard from "./RoleGuard";
 import { ROUTES } from "./routes";
-import { AppRole } from "../api/identity/models";
-import { DashboardPage } from "../features/dashboard";
 
 // Role definitions matching backend AppRole enum
 const ADMIN_ROLES = [AppRole.Root, AppRole.Admin];
@@ -23,17 +23,6 @@ const SystemUserDetailPage = lazy(() =>
 		default: m.SystemUserDetailPage,
 	})),
 );
-const SystemUserCreatePage = lazy(() =>
-	import("../features/system-users/pages").then((m) => ({
-		default: m.SystemUserCreatePage,
-	})),
-);
-const SystemUserEditPage = lazy(() =>
-	import("../features/system-users/pages").then((m) => ({
-		default: m.SystemUserEditPage,
-	})),
-);
-
 // Teams
 const TeamListPage = lazy(() =>
 	import("../features/teams/pages").then((m) => ({
@@ -139,16 +128,8 @@ export const router = createBrowserRouter([
 						element: <SystemUserListPage />,
 					},
 					{
-						path: ROUTES.SYSTEM_USERS_CREATE,
-						element: <SystemUserCreatePage />,
-					},
-					{
 						path: ROUTES.SYSTEM_USERS_DETAIL,
 						element: <SystemUserDetailPage />,
-					},
-					{
-						path: ROUTES.SYSTEM_USERS_EDIT,
-						element: <SystemUserEditPage />,
 					},
 					// CDR
 					{

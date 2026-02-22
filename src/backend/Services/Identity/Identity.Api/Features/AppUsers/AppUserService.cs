@@ -39,8 +39,8 @@ public class AppUserService : IAppUserService
 
         if (string.IsNullOrWhiteSpace(request.Password))
             validationErrors.Add("Hasło jest wymagane");
-        else if (request.Password.Length < 8)
-            validationErrors.Add("Hasło musi mieć co najmniej 8 znaków");
+        else if (request.Password.Length < 5)
+            validationErrors.Add("Hasło musi mieć co najmniej 5 znaków");
 
         if (validationErrors.Count > 0)
             return Result<AppUserResponse>.Failure(new ValidationError(validationErrors));

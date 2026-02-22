@@ -259,9 +259,9 @@ export const useGetTeam = <TError = ApiErrorResponse, TContext = unknown>(
 
 	return useMutation(mutationOptions, queryClient);
 };
-export type createTeamResponse201 = {
+export type createTeamResponse200 = {
 	data: TeamResponse;
-	status: 201;
+	status: 200;
 };
 
 export type createTeamResponse400 = {
@@ -269,7 +269,7 @@ export type createTeamResponse400 = {
 	status: 400;
 };
 
-export type createTeamResponseSuccess = createTeamResponse201 & {
+export type createTeamResponseSuccess = createTeamResponse200 & {
 	headers: Headers;
 };
 export type createTeamResponseError = createTeamResponse400 & {

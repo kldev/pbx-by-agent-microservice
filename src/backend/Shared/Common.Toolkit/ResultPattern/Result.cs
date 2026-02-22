@@ -34,6 +34,19 @@ public abstract class Result<T>
 
     public static NotFoundFailure<T> NotFoundFailure(GenericError error) => new(error);
 
+    // --- Implicit operators ---
+
+    public static implicit operator Result<T>(T value)
+        => value is null
+            ? throw new ArgumentNullException(nameof(value), "Use explicit error instead of returning null.")
+            : new Success<T>(value);
+
+    public static implicit operator Result<T>(ValidationError error) => new ValidationFailure<T>(error);
+    public static implicit operator Result<T>(GenericError error) => new GenericFailure<T>(error);
+    public static implicit operator Result<T>(BusinessLogicError error) => new BusinessLogicFailure<T>(error);
+    public static implicit operator Result<T>(NotFoundError error) => new NotFoundFailure<T>(error);
+    public static implicit operator Result<T>(ForbiddenError error) => new ForbiddenFailure<T>(error);
+    
     /// <summary>
     /// Pattern match na Result - wykonuje odpowiednią funkcję w zależności od sukcesu/błędu
     /// </summary>

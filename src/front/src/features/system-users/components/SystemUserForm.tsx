@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Department } from "../../../api/identity/models";
 import RolePicker from "./RolePicker";
+import StructureDropdown from "./StructureDropdown";
 
 const useStyles = makeStyles({
 	form: {
@@ -68,6 +69,7 @@ export interface SystemUserFormData {
 	department: (typeof Department)[keyof typeof Department];
 	roles: string[];
 	isActive: boolean;
+	structureId: number | null;
 }
 
 export interface SystemUserFormProps {
@@ -106,6 +108,7 @@ const SystemUserForm: React.FC<SystemUserFormProps> = ({
 			password: "",
 			department: Department.Sales,
 			roles: ["ResponsiblePerson"],
+			structureId: null,
 			isActive: true,
 			...initialData,
 		},
@@ -113,6 +116,7 @@ const SystemUserForm: React.FC<SystemUserFormProps> = ({
 
 	const selectedDepartment = watch("department");
 	const selectedRoles = watch("roles");
+	const selectedStructure = watch("structureId");
 
 	useEffect(() => {
 		if (initialData) {
@@ -123,6 +127,7 @@ const SystemUserForm: React.FC<SystemUserFormProps> = ({
 				password: "",
 				department: Department.Sales,
 				roles: ["ResponsiblePerson"],
+				structureId: null,
 				isActive: true,
 				...initialData,
 			});
@@ -139,6 +144,11 @@ const SystemUserForm: React.FC<SystemUserFormProps> = ({
 				data.optionValue as (typeof Department)[keyof typeof Department],
 			);
 		}
+	};
+
+	const handleStructureChangeChange = (structureId: number | null) => {
+		console.log(`$$$ structureId ${structureId}`);
+		setValue("structureId", structureId);
 	};
 
 	const handleRolesChange = (roles: string[]) => {
@@ -245,24 +255,26 @@ const SystemUserForm: React.FC<SystemUserFormProps> = ({
 				)}
 
 				{isEditMode && (
-					<Field
-						label="Dział *"
-						validationState={errors.department ? "error" : "none"}
-						validationMessage={errors.department?.message}
-					>
-						<Dropdown
-							value={selectedDepartmentLabel}
-							selectedOptions={[selectedDepartment]}
-							onOptionSelect={handleDepartmentChange}
-							placeholder="Wybierz dział"
+					<>
+						<Field
+							label="Dział *"
+							validationState={errors.department ? "error" : "none"}
+							validationMessage={errors.department?.message}
 						>
-							{departmentOptions.map((option) => (
-								<Option key={option.value} value={option.value}>
-									{option.label}
-								</Option>
-							))}
-						</Dropdown>
-					</Field>
+							<Dropdown
+								value={selectedDepartmentLabel}
+								selectedOptions={[selectedDepartment]}
+								onOptionSelect={handleDepartmentChange}
+								placeholder="Wybierz dział"
+							>
+								{departmentOptions.map((option) => (
+									<Option key={option.value} value={option.value}>
+										{option.label}
+									</Option>
+								))}
+							</Dropdown>
+						</Field>
+					</>
 				)}
 			</div>
 
@@ -285,6 +297,16 @@ const SystemUserForm: React.FC<SystemUserFormProps> = ({
 								</Option>
 							))}
 						</Dropdown>
+					</Field>
+					<Field
+						label="Structure *"
+						validationState={errors.structureId ? "error" : "none"}
+						validationMessage={errors.structureId?.message}
+					>
+						<StructureDropdown
+							onChange={handleStructureChangeChange}
+							value={selectedStructure}
+						/>
 					</Field>
 					<div />
 				</div>

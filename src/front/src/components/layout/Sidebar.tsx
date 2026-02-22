@@ -221,27 +221,27 @@ const Sidebar: React.FC = () => {
 				</div>
 
 				{/* Grupa: Finanse - tylko dla adminów */}
-			{isAdmin && (
-				<>
-					<div className={styles.navDivider} />
-					<NavGroupLabel
-						label="Finanse"
-						shortLabel="F"
-						collapsed={isSidebarCollapsed}
-					/>
-					<div className={styles.navGroup}>
-						<NavItem
-							to={ROUTES.COSTS_LIST}
-							icon={<MoneyRegular />}
-							activeIcon={<MoneyFilled />}
-							label="Koszty"
+				{isAdmin && (
+					<>
+						<div className={styles.navDivider} />
+						<NavGroupLabel
+							label="Finanse"
+							shortLabel="F"
 							collapsed={isSidebarCollapsed}
 						/>
-					</div>
-				</>
-			)}
+						<div className={styles.navGroup}>
+							<NavItem
+								to={ROUTES.COSTS_LIST}
+								icon={<MoneyRegular />}
+								activeIcon={<MoneyFilled />}
+								label="Koszty"
+								collapsed={isSidebarCollapsed}
+							/>
+						</div>
+					</>
+				)}
 
-			{/* Grupa: Systemowe - tylko dla adminów */}
+				{/* Grupa: Systemowe - tylko dla adminów */}
 				{isAdmin && (
 					<>
 						<div className={styles.navDivider} />

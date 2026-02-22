@@ -266,9 +266,9 @@ export const useGetAppUser = <TError = ApiErrorResponse, TContext = unknown>(
 
 	return useMutation(mutationOptions, queryClient);
 };
-export type createAppUserResponse201 = {
+export type createAppUserResponse200 = {
 	data: AppUserResponse;
-	status: 201;
+	status: 200;
 };
 
 export type createAppUserResponse400 = {
@@ -276,7 +276,7 @@ export type createAppUserResponse400 = {
 	status: 400;
 };
 
-export type createAppUserResponseSuccess = createAppUserResponse201 & {
+export type createAppUserResponseSuccess = createAppUserResponse200 & {
 	headers: Headers;
 };
 export type createAppUserResponseError = createAppUserResponse400 & {
